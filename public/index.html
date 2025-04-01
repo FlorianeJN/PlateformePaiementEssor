@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plateforme de paiement de loyer | Essor Solidaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('civ.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 100%;
+            height: auto;
+            max-height: 100px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border 0.3s ease-in-out;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        input[type="email"] {
+            height: 40px;
+        }
+
+        input:focus {
+            border-color: #007BFF;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: black;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #333;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        #status {
+            margin-top: 1rem;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+                height: auto;
+            }
+
+            .container {
+                padding: 20px;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+
+            input {
+                padding: 10px;
+            }
+
+            button {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="logoEssor.jpeg" alt="Logo Essor Solidaire">
+        <h1>Plateforme de paiement de loyer</h1>
+        <form id="paymentForm">
+            <div class="form-group">
+                <label for="amount">Montant (FCFA)</label>
+                <input type="number" name="amount" id="amount" value="1000" required>
+            </div>
+
+            <div class="form-group">
+                <label for="customerFirstName">Prénom</label>
+                <input type="text" id="customerFirstName" name="customerFirstName" placeholder="Aya" required>
+            </div>
+
+            <div class="form-group">
+                <label for="customerLastname">Nom</label>
+                <input type="text" id="customerLastname" name="customerLastname" placeholder="Coulibaly" required>
+            </div>
+
+            <div class="form-group">
+                <label for="customerPhoneNumber">Téléphone</label>
+                <input type="text" id="customerPhoneNumber" name="customerPhoneNumber" placeholder="0102030405" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" id="description" name="description" placeholder="Loyer mois de décembre" required>
+            </div>
+
+            <button type="submit">Payer</button>
+        </form>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const statusElement = document.getElementById('status');
+            statusElement.style.display = 'block'; // Make the status visible
+
+            // Collecting the form values
+            const data = {
+                amount: parseInt(document.getElementById('amount').value),
+                invoice_data: {
+                    customerFirstName: document.getElementById('customerFirstName').value,
+                    customerLastname: document.getElementById('customerLastname').value,
+                    customerPhoneNumber: document.getElementById('customerPhoneNumber').value
+                },
+                description: document.getElementById('description').value
+            };
+
+            // Displaying status message while submitting
+            statusElement.textContent = "Initialisation du paiement...";
+
+            // Simulate an API response
+            setTimeout(() => {
+                // Simulating a successful API call
+                const isSuccess = false; // Change this to `false` for testing error
+
+                if (isSuccess) {
+                    statusElement.classList.add('success');
+                    statusElement.classList.remove('error');
+                    statusElement.textContent = "Paiement initialisé avec succès!";
+                } else {
+                    statusElement.classList.add('error');
+                    statusElement.classList.remove('success');
+                    statusElement.textContent = "Une erreur s'est produite. Veuillez réessayer.";
+                }
+            }, 2000);
+
+            console.log(data); 
+        });
+    </script>
+</body>
+</html>
